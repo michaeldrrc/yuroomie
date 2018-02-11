@@ -1,15 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}YURoomie{% endblock %}</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'home/css/bootstrap.css' %}" />
-    <script src="home/js/bootstrap.js"></script>
+    <script type="text/javascript" src="{% static 'home/js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/bootstrap.js' %}"></script>
 </head>
 
 <body>
-    {% block body %}
-    {% endblock %}
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #cc2030">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}"><span class="navbar-brand mb-0 h1">YURoomie</span></a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        {% block body %}
+        {% endblock %}
+    </div>
 </body>
