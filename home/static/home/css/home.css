@@ -1,11 +1,10 @@
 #mainSearchBar {
-    width: 600px;
     height: 60px;
+    width: 100%;
 }
 
 #mainSearchButton {
     height: 60px;
-    width: 120px;
 }
 
 .display-1 {

@@ -3,21 +3,19 @@
 {% block body %}
     <!-- body content for home page -->
     <div class="container-fluid">
-        <div class="col-xs-12" style="height:150px;"></div>
-        <div class="row">
+        <div class="col">
+            <div class="col-xs-12" style="height:150px;"></div>
             <h1 class="display-1"><strong>YURoomie</strong></h1>
-        </div>
-        <div class="row">
             <h2 class="display-4">find your ideal roommate.</h2>
         </div>
-        <div class="row">
-            <form class="form-inline" method="GET" value="{{ request.GET.get }}">
-                <div class="form-group">
-                    <input type="search" name="q" class="form-control mr-sm-2" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
-                    <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
-                    <button type="submit" class="btn btn-danger my-2 my-sm-0" id="mainSearchButton">Search</button>
-                </div>
-            </form>
-        </div>
+        <form class="form-inline" method="GET" value="{{ request.GET.get }}">
+            <div class="col-9">
+                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
+            </div>
+            <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
+            <div class="col-3">
+                <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
+            </div>
+        </form>
     </div>
 {% endblock %}
