@@ -4,7 +4,7 @@ from django.http import Http404
 from .models import Room
 
 def index(request):
-    latest_posts_list = Room.objects.order_by('-last_updated')[:6]
+    latest_posts_list = Room.objects.order_by('-last_updated')[:4]
     return render(request, 'home/index.html', {'latest_posts_list': latest_posts_list})
 
 def detail(request, room_id):
