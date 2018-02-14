@@ -10,7 +10,7 @@ class Room(models.Model):
     cost = models.PositiveIntegerField(default=0)
     visists = models.PositiveIntegerField(default=0)
     number_of_rooms = models.PositiveSmallIntegerField()
-    last_updated = models.DateTimeField('last updated')
+    last_updated = models.DateTimeField('last updated') # ToDo: Fix the timezone issue
 
     def __str__(self):
         return self.property_name

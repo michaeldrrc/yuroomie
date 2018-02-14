@@ -5,30 +5,28 @@
 {% block body %}
     <!-- body content for home page -->
     <div class="container-fluid">
+        <div class="w-100" style="height:150px;"></div>
         <div class="col">
-            <div class="w-100" style="height:150px;"></div>
-            <h1 class="display-1"><strong>YURoomie</strong></h1>
-            <h2 class="display-4">find your ideal roommate.</h2>
         </div>
         <form class="form-inline" method="GET" value="{{ request.GET.get }}">
-            <div class="col-9">
+            <div class="col">
                 <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
             </div>
             <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
-            <div class="col-3">
+            <div class="col-auto">
                 <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
             </div>
         </form>
         <div class="w-100" style="height:100px;"></div>
         <h1>Latest Listings</h1>
-        <div class="card-deck"> <!-- ToDo: Add support for mobile (so each card goes down to the next row on small screens) -->
+        <div class="card-deck">
             {% if latest_posts_list %}
                 {% for room in latest_posts_list %}
                     <div class="card">
                         <a href="/r/{{ room.id }}/"><img class="card-img-top" src="{% static 'home/ballerina.jpg' %}" alt="{{room.name}}"></a>
                         <div class="card-body">
                             <a href="/r/{{ room.id }}/"><h5 class="card-title">{{ room.property_name }}</h5></a>
-                            <p class="card-text">{{ room.description }}</p>
+                            <p class="card-text">{{ room.description|truncatewords:23 }}</p>
                         </div>
                         <div class="card-footer">
                             <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
