@@ -1,10 +1,12 @@
 {% extends 'home/base.html'%}
 
+{% load static %} <!-- REMOVE whenwe implement database images -->
+
 {% block body %}
     <!-- body content for home page -->
     <div class="container-fluid">
         <div class="col">
-            <div class="col-xs-12" style="height:150px;"></div>
+            <div class="w-100" style="height:150px;"></div>
             <h1 class="display-1"><strong>YURoomie</strong></h1>
             <h2 class="display-4">find your ideal roommate.</h2>
         </div>
@@ -17,16 +19,25 @@
                 <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
             </div>
         </form>
-
-        {% if latest_posts_list %}
-            <ul>
-            {% for room in latest_posts_list %}
-                <li><a href="/r/{{ room.id }}/">{{ room.property_name }}</a></li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No rooms are available.</p>
-        {% endif %}
-
+        <div class="w-100" style="height:100px;"></div>
+        <h1>Latest Listings</h1>
+        <div class="card-deck"> <!-- ToDo: Add support for mobile (so each card goes down to the next row on small screens) -->
+            {% if latest_posts_list %}
+                {% for room in latest_posts_list %}
+                    <div class="card">
+                        <a href="/r/{{ room.id }}/"><img class="card-img-top" src="{% static 'home/ballerina.jpg' %}" alt="{{room.name}}"></a>
+                        <div class="card-body">
+                            <a href="/r/{{ room.id }}/"><h5 class="card-title">{{ room.property_name }}</h5></a>
+                            <p class="card-text">{{ room.description }}</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h1>No rooms are available.</h1>
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
