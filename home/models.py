@@ -14,6 +14,7 @@ class Room(models.Model):
     visists = models.PositiveIntegerField(default=0)
     number_of_rooms = models.PositiveSmallIntegerField()
     last_updated = models.DateTimeField(auto_now_add=True)
+    thumbnail = models.ImageField()
 
     def __str__(self):
         return self.property_name

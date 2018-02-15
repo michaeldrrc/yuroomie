@@ -15,7 +15,8 @@ def detail(request, room_id):
     
 def create(request):
     if request.method == 'POST':
-        form = RoomPostForm(request.POST)
+        print(request.POST['address']) # we can pull and manipulate each attribute given in the POST using 'request.POST['name_of_field_in_html']'
+        form = RoomPostForm(request.POST, request.FILES)
         if form.is_valid():
             new_room = form.save()
             return HttpResponseRedirect(reverse(detail, args=(new_room.pk,)))
