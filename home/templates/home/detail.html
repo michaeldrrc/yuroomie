@@ -1,5 +1,27 @@
 {% extends 'home/base.html'%}
 
+{% load static %}
+
 {% block body %}
-    {{ room }}
+<div class="row">
+    <div class="col-12">
+        <h1>{{ room.property_name }}</h1>
+    </div>
+    <div class="col-12">
+        <h4>{{ room.host_name }}</h4>
+    </div>
+    <div class="col-12">
+        <p class="text-muted">Last updated: {{ room.last_updated.date }}</p>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 col-sm-12">
+        <img src="{% static 'home/ballerina.jpg' %}">
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <p>{{ room.description }}</p>
+    </div>
+</div>
+
 {% endblock %}
