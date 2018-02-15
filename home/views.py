@@ -1,15 +1,24 @@
-from django.shortcuts import render
-from django.http import Http404
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.http import HttpResponseRedirect
+from .forms import RoomPostForm
 
 from .models import Room
 
 def index(request):
-    latest_posts_list = Room.objects.order_by('-last_updated')[:6]
+    latest_posts_list = Room.objects.order_by('-last_updated')[:4]
     return render(request, 'home/index.html', {'latest_posts_list': latest_posts_list})
 
 def detail(request, room_id):
-    try:
-        room = Room.objects.get(pk=room_id)
-    except Room.DoesNotExist:
-        raise Http404("OOPS. We couldn't find the listing you were looking for")
+    room = get_object_or_404(Room, pk=room_id)
     return render(request, 'home/detail.html', {'room': room})
+    
+def create(request):
+    if request.method == 'POST':
+        form = RoomPostForm(request.POST)
+        if form.is_valid():
+            new_room = form.save()
+            return HttpResponseRedirect(reverse(detail, args=(new_room.pk,)))
+    else:
+        form = RoomPostForm()
+    return render(request, 'home/create.html', {'form': form})

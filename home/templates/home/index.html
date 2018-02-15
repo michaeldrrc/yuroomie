@@ -23,11 +23,15 @@
             {% if latest_posts_list %}
                 {% for room in latest_posts_list %}
                     <div class="card">
-                        <a href="/r/{{ room.id }}/"><img class="card-img-top" src="{% static 'home/ballerina.jpg' %}" alt="{{room.name}}"></a>
+                        <a href="{% url 'detail' room.id %}"><img class="card-img-top" src="{% static 'home/ballerina.jpg' %}" alt="{{room.name}}"></a>
                         <div class="card-body">
-                            <a href="/r/{{ room.id }}/"><h5 class="card-title">{{ room.property_name }}</h5></a>
+                            <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
                             <p class="card-text">{{ room.description|truncatewords:23 }}</p>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{ room.address }}</li>
+                            <li class="list-group-item">${{ room.cost }}</li>
+                        </ul>
                         <div class="card-footer">
                             <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
                         </div>
