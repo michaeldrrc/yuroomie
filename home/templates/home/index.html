@@ -23,7 +23,8 @@
             {% if latest_posts_list %}
                 {% for room in latest_posts_list %}
                     <div class="card">
-                        <a href="{% url 'detail' room.id %}"><img class="card-img-top" src="{{ room.thumbnail.url }}" alt="{{room.name}}"></a>
+                        <a href="{% url 'detail' room.id %}">
+                            <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
                         <div class="card-body">
                             <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
                             <p class="card-text">{{ room.description|truncatewords:23 }}</p>

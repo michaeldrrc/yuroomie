@@ -11,10 +11,14 @@ class Room(models.Model):
     property_name = models.CharField(max_length=30, default="")
     description = models.TextField(default="No Description")
     cost = models.PositiveIntegerField(default=0)
-    visists = models.PositiveIntegerField(default=0)
+    visits = models.PositiveIntegerField(default=0)
     number_of_rooms = models.PositiveSmallIntegerField()
     last_updated = models.DateTimeField(auto_now_add=True)
-    thumbnail = models.ImageField()
 
     def __str__(self):
         return self.property_name
+
+class RoomImage(models.Model):
+    """child model of room model (many to one relationship)"""
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    image = models.ImageField()
