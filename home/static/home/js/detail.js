@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#imageGrid img').click(function(){
         $('#overlay').show();
-        $('#image-container').append("<img src="+ this.src + " class=\"mx-auto d-block align-middle\">");
+        $('#image-container').append("<img src="+ this.src + ">");
     });
     
     $('#overlay').click(function(){

@@ -29,6 +29,13 @@ img {
     cursor: pointer; /* Add a pointer on hover */
 }
 
+#image-container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .expandable-image {
     cursor: pointer;
 }
