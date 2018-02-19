@@ -1,11 +1,11 @@
 $(document).ready(function() {
     $('#imageGrid img').click(function(){
         $('#overlay').show();
-        $('#overlay').append("<img src="+ this.src + " class=\"overlay-image\">");
+        $('#image-container').append("<img src="+ this.src + " class=\"mx-auto d-block align-middle\">");
     });
     
     $('#overlay').click(function(){
-        $('#overlay').empty();
+        $('#image-container').empty();
         $('#overlay').hide();
     });
 });

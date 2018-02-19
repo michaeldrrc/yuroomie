@@ -29,13 +29,6 @@ img {
     cursor: pointer; /* Add a pointer on hover */
 }
 
-.overlay-image {
-    display: block;
-    margin: auto;
-    max-width:70%;
-    max-height:70%;
-}
-
 .expandable-image {
     cursor: pointer;
 }
