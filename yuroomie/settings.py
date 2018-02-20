@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['localhost']
 
 INSTALLED_APPS = [
     'home.apps.HomeConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'yuroomie.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['accounts/templates/accounts/', 'home/templates/home/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +124,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/'
