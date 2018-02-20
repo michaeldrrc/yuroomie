@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import CustomUser
+from .models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
@@ -18,9 +18,9 @@ class UserRegistrationForm(UserCreationForm):
         user.email = self.cleaned_data['email']
 
         if commit:
-            user.save()
+            return user.save()
 
 class UserProfileForm(ModelForm):
     class Meta:
-        model = CustomUser
+        model = Profile
         exclude = ['user']

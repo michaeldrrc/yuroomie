@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import RoomPostForm
 from .models import Room, RoomImage
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     latest_posts_list = Room.objects.order_by('-last_updated')[:4]
