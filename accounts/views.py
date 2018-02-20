@@ -1,5 +1,5 @@
-from accounts.forms import UserRegistrationForm, UserProfileForm
-from django.contrib.auth import authenticate, login
+from .forms import UserRegistrationForm, UserProfileForm, LoginForm
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 
 def signup(request):
@@ -21,3 +21,23 @@ def signup(request):
         uf = UserRegistrationForm(prefix='user')
         upf = UserProfileForm(prefix='userprofile')
     return render(request, 'signup.html', {'userform': uf, 'userprofileform': upf})
+
+def signin(request):
+    if request.method == 'POST':
+        loginForm = LoginForm(request.POST)
+        if loginForm.is_valid():
+            cd = loginForm.cleaned_data
+            user = authenticate(username=cd['username'], 
+                                password=cd['password'])
+            if user is not None:
+                login(request, user)
+                return render(request, 'signup_success.html')
+            else:
+                return render(request, 'signin.html', {'loginForm': loginForm})
+    else:
+        loginForm = LoginForm(request.POST)
+    return render(request, 'signin.html', {'loginForm': loginForm})
+
+def signout(request):
+    logout(request)
+    return render(request, 'signout_success.html')
