@@ -3,9 +3,6 @@
 {% block body %}
 <form method="post" action="{% url 'signin' %}">
     <h1>Sign In</h1>
-    {% if loginForm.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
     {% csrf_token %}
     {{loginForm.as_p}}
     <button type="submit">Sign In</button>

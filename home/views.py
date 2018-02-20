@@ -28,6 +28,7 @@ def detail(request, room_id):
     roomImages = list(room.roomimage_set.all())
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
+@login_required()
 def create(request):
     if request.method == 'POST':
         print(request.POST['address']) # we can pull and manipulate each attribute given in the POST using 'request.POST['name_of_field_in_html']'
