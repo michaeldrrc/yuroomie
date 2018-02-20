@@ -1,10 +1,30 @@
 {% extends 'home/base.html'%}
 
 {% block body %}
-    {% for room in rooms %}
-        {{ room.address }}
-    {% endfor %}
+    <div class="list-group list-group-flush">
 
+      {% for room in rooms %}
+      <div class="list-group-item">
+        <div class="d-flex flex-row">
+          <div class="p-0">
+            <a href="{% url 'detail' room.id %}">
+                <div class="img-thumbnail">
+                  <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic" height="150px" width="auto" display="block">
+                </div>
+            </a>
+          </div>
+
+          <div class="pl-3">
+             <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
+             <p class="m-1">{{ room.address}}</p>
+             <p class="m-1">${{ room.cost}}</p>
+             <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
+          </div>
+        </div>
+        <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated}}</p>
+      </div>
+      {% endfor %}
+    </div>
     {% if rooms.has_other_pages %}
     <nav aria-label="...">
         <ul class="pagination">
