@@ -39,3 +39,6 @@ img {
 .expandable-image {
     cursor: pointer;
 }
+.btn-size {
+    width: 100px;
+}
