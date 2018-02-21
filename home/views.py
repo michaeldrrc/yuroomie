@@ -34,10 +34,10 @@ def search(request):
         # check all Room variables in order of importance >>
         ##  property_name > host_name > address > description
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.host_name.lower():
+            if request.GET['q'].lower() in room.property_name.lower():
                 result_list.append(room)
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.property_name.lower() and room not in result_list:
+            if request.GET['q'].lower() in room.host_name.lower() and room not in result_list:
                 result_list.append(room)
         for room in Room.objects.all():
             if request.GET['q'].lower() in room.address.lower() and room not in result_list:
