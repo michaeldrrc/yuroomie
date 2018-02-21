@@ -13,6 +13,7 @@ class Room(models.Model):
     cost = models.PositiveIntegerField(default=0)
     visits = models.PositiveIntegerField(default=0)
     number_of_rooms = models.PositiveSmallIntegerField()
+    creator_id = models.PositiveIntegerField()
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

@@ -1,6 +1,7 @@
 from .forms import UserRegistrationForm, UserProfileForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from home.models import Room
 
 def signup(request):
     if request.method == 'POST':
@@ -41,3 +42,11 @@ def signin(request):
 def signout(request):
     logout(request)
     return render(request, 'signout_success.html')
+
+def user_listings(request):
+    user_listings = []
+    all_rooms = Room.objects.all()
+    for room in all_rooms:
+        if request.user.pk == room.creator_id:
+            user_listings.append(room)
+    return render(request, 'accounts/your_listings.html', {'user_listings': user_listings})

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block body %}
+{% for room in user_listings %}
+    {{room.property_name}}
+{% endfor %}
+{% endblock %}

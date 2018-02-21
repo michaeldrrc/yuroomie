@@ -19,7 +19,7 @@ def browse_rooms(request):
     except PageNotAnInteger:
         rooms = paginator.page(1)
     except EmptyPage:
-        pasts = paginator.page(paginator.num_pages)
+        page = paginator.page(paginator.num_pages)
     return render(request, 'home/browse.html', {'page': page,
                                                 'rooms': rooms})
 
@@ -44,6 +44,7 @@ def create(request):
             address = (request.POST['address1'] + ', ')
             address += (request.POST['city'] + ', ON, ' + request.POST['postalCode'])
             new_room.address = address
+            new_room.creator_id = request.user.pk
             new_room.save()
             # for each image uploaded, save it with it's parent room being the room we just created
             for i in request.FILES.getlist('images'):
