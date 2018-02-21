@@ -8,17 +8,35 @@
         <div class="w-100" style="height:100px;"></div>
         <div class="col">
         </div>
+
+        {% if filters is not None %}
+            <a href="{% url 'search' %}?q{{ query }}">Clear Filter</a>
+        {% endif %}
+        <script>
+            var price_range_low = "{{ prl }}";
+            var price_range_high = "{{ prh }}";
+            if (price_range_high != 99999 || price_range_low != 0) 
+                document.getElementById('filter').innerHTML = "Price Range: "
+                        + price_range_low + " - " + price_range_high;
+        </script>
         <form class="form-inline" method="GET" action="{% url 'search' %}">
             <div class="col">
                 <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
-            </div>
-            <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
+            </div>       
             <div class="col-auto">
                 <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
             </div>
+            {% if filters is not None %}
+                <input type="hidden" name="filter" value="{{ filters }}">
+            {% endif %}
         </form>
-        <div class="w-100" style="height:100px;"></div>
+
+        <div class="w-100" style="height:30px;"></div>
         <h2>Search Results:</h2>
+        <h5>
+            There {% if num_results != 1%}are {{ num_results }} rooms that match{%else%}is 1 room that matches{% endif %}  "{{ query }}"
+            {% if filters is not None %} in the price range ${{ prl }} - ${{ prh }}{% endif %}.
+        </h5>
         <div class="card-deck">
             {% if rooms %}
                 {% for room in rooms %}
@@ -38,8 +56,6 @@
                         </div>
                     </div>
                 {% endfor %}
-            {% else %}
-                <h1>There are no rooms that match your search terms.</h1>
             {% endif %}
         </div>
     </div>
