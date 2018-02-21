@@ -1,4 +1,5 @@
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render
+from django.db.models import Q
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -28,30 +29,49 @@ def detail(request, room_id):
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
 def search(request):
-    result_list = []
-    query_set = request.GET
-    if 'q' in query_set:
-        print('Search request: {}'.format(request.GET['q']))
-        # check all Room variables in order of importance >>
-        ##  property_name > host_name > address > description
-        for room in Room.objects.all():
-            if query_set['q'].lower() in room.property_name.lower():
-                result_list.append(room)
-        for room in Room.objects.all():
-            if query_set['q'].lower() in room.host_name.lower() and room not in result_list:
-                result_list.append(room)
-        for room in Room.objects.all():
-            if query_set['q'].lower() in room.address.lower() and room not in result_list:
-                result_list.append(room)
-        for room in Room.objects.all():
-            if query_set['q'].lower() in room.description.lower() and room not in result_list:
-                result_list.append(room)
+    result_list = Room.objects.all()
+    query_dict = request.GET
+    context = {}
+    if 'q' in query_dict:
+        query_q = context['query'] = query_dict['q']
+        print('Search request: {}'.format(query_q))
 
-    if 'filer' in query_set:
-        print(query_set['filter'])
-    else: print("No request")
+        result_list = result_list.filter(
+            Q(property_name__icontains=query_q) |
+            Q(host_name__icontains=query_q) |
+            Q(address__icontains=query_q) |
+            Q(description__icontains=query_q)
+        )
+            
+    else: print("No query request")
 
-    return render(request, 'home/search.html', {'rooms': result_list})
+    if 'filter' in query_dict:
+        filters = context['filters'] = query_dict['filter']
+        print('Filter request: {}'.format(query_dict['filter']))
+        try:
+            filter_dict = dict(item.split("=") for item in filters.split("~"))
+            if 'prh' in filter_dict:
+                context['prh'] = filter_dict['prh']
+            else:
+                context['prh'] = 99999
+            if 'prl' in filter_dict:
+                context['prl'] = filter_dict['prl']
+            else:
+                context['prl'] = 0
+            result_list = result_list.filter(cost__gte=context['prl'], cost__lte=context['prh'])
+        except ValueError:
+            # do not filter, no value for all keys
+            filters = None    
+    else:
+        context['prh'] = 99999
+        context['prl'] = 0
+        filters = None
+        print("No filter request")
+    
+    context['rooms'] = result_list
+    context['num_results'] = len(result_list)
+
+    return render(request, 'home/search.html', context)
 
 @login_required()
 def create(request):
