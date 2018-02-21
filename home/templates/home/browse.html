@@ -5,22 +5,22 @@
 
 <div class="row">
     <div class="list-group list-group-flush">
-      {% for room in rooms %}
-     <div class="list-group-item">
+    {% for room in rooms %}
+    <div class="list-group-item">
         <div class="row">
           <div class="col-12 col-md-2">
             <a href="{% url 'detail' room.id %}">
                 <div class="img-thumbnail">
-                  <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic" >
+                    <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic" >
                 </div>
             </a>
           </div>
 
           <div class="pl-3 col-12 col-md-10">
-             <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
-             <p class="m-1">{{ room.address}}</p>
-             <p class="m-1">${{ room.cost}}</p>
-             <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
+                <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
+                <p class="m-1">{{ room.address}}</p>
+                <p class="m-1">${{ room.cost}}</p>
+                <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
           </div>
         </div>
         <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>

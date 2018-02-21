@@ -6,7 +6,7 @@
     
     {% csrf_token %}
     <div class="row">
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-4 col-sm-12">
             <div class="form-group">
                 <div class="form-group">
                     <label for="usernameInput">Username</label>
@@ -19,8 +19,9 @@
             </div>
         </div>
     </div>
-    <button class="btn btn-size btn-danger" type="submit">Sign In</button>
+    <br>
+    <button class="btn btn-lg btn-size btn-danger" type="submit">Sign In</button>
 </form>
 <br>
-<a href="{% url 'signup' %}"><button class="btn btn-size btn-light">Sign Up</button></a>
+<a href="{% url 'signup' %}"><button class="btn btn-lg btn-size btn-light">Sign Up</button></a>
 {% endblock %}
