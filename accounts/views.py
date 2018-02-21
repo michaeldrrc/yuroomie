@@ -16,10 +16,20 @@ def signup(request):
                 login(request, user)
                 userprofile = Profile(user=user)
                 userprofile.save()
-                return render(request, 'signup_success.html')
+                return redirect('edit_profile')
     else:
         uf = UserRegistrationForm(prefix='user')
     return render(request, 'signup.html', {'userform': uf})
+
+def edit_profile(request):
+    if request.method == 'POST':
+         user = request.user
+         profile = Profile.objects.get(user=user)
+         profile.major = request.POST['major']
+         profile.save()
+         return render(request, 'signup_success.html')
+    return render(request, 'edit_profile.html')
+
 
 def signin(request):
     if request.method == 'POST':
