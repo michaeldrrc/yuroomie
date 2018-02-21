@@ -12,7 +12,13 @@ class Room(models.Model):
     description = models.TextField(default="No Description")
     cost = models.PositiveIntegerField(default=0)
     visits = models.PositiveIntegerField(default=0)
+    property_type_options = (('a', 'apartment'),
+                                ('c', 'condo'),
+                                ('t', 'townhouse'),
+                                ('h', 'house'))
+    property_type = models.CharField(choices=property_type_options, max_length=10)
     number_of_rooms = models.PositiveSmallIntegerField()
+    garages = models.PositiveSmallIntegerField()
     creator_id = models.PositiveIntegerField()
     last_updated = models.DateTimeField(auto_now_add=True)
 
