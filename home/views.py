@@ -31,18 +31,27 @@ def detail(request, room_id):
 @login_required()
 def create(request):
     if request.method == 'POST':
-        print(request.POST['address']) # we can pull and manipulate each attribute given in the POST using 'request.POST['name_of_field_in_html']'
         form = RoomPostForm(request.POST, request.FILES)
         if form.is_valid():
+            print('valid')
+            # if the user added more than 4 (to be changed to 6) or no images, return the form again
             if len(request.FILES.getlist('images')) > 4 or len(request.FILES.getlist('images')) == 0:
-                form = RoomPostForm()
                 return render(request, 'home/create.html', {'form': form})
-
-            new_room = form.save()
+            
+            new_room = form.save(commit=False)
+            new_room.host_name = (request.user.first_name + ' ' + request.user.last_name[:1])
+            # concatenate all form address inputs into one consistentLy formatted address
+            address = (request.POST['address1'] + ', ')
+            address += (request.POST['city'] + ', ON, ' + request.POST['postalCode'])
+            new_room.address = address
+            new_room.save()
+            # for each image uploaded, save it with it's parent room being the room we just created
             for i in request.FILES.getlist('images'):
                 image = RoomImage(room=new_room, image=i)
                 image.save()
             return HttpResponseRedirect(reverse(detail, args=(new_room.pk,)))
+        else:
+            print('invalid')
     else:
         form = RoomPostForm()
     return render(request, 'home/create.html', {'form': form})
