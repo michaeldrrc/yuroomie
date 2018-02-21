@@ -19,8 +19,7 @@ def browse_rooms(request):
         rooms = paginator.page(1)
     except EmptyPage:
         pasts = paginator.page(paginator.num_pages)
-    return render(request, 'home/browse.html', {'page': page,
-                                                'rooms': rooms})
+    return render(request, 'home/browse.html', {'page': page, 'rooms': rooms})
 
 def detail(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
@@ -28,15 +27,29 @@ def detail(request, room_id):
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
 def search(request):
-    if request.method == 'GET':
-        room_id = None
+    try:
+        result_list = []
         print('Search request: {}'.format(request.GET['q']))
-        for room in Room.objects.all():
-            if room.host_name == request.GET['q']:
-                room_id = room.id
-                return redirect('/r/{}/'.format(room_id))
-        else: return redirect('/'.format(room_id))
 
+        # check all Room variables in order of importance >>
+        ##  property_name > host_name > address > description
+        for room in Room.objects.all():
+            if request.GET['q'].lower() in room.host_name.lower():
+                result_list.append(room)
+        for room in Room.objects.all():
+            if request.GET['q'].lower() in room.property_name.lower() and room not in result_list:
+                result_list.append(room)
+        for room in Room.objects.all():
+            if request.GET['q'].lower() in room.address.lower() and room not in result_list:
+                result_list.append(room)
+        for room in Room.objects.all():
+            if request.GET['q'].lower() in room.description.lower() and room not in result_list:
+                result_list.append(room)
+    except KeyError:
+        # no request or invalid query variable (not 'q') used
+        print("No search term provided")
+
+    return render(request, 'home/search.html', {'rooms': result_list})
 
 def create(request):
     if request.method == 'POST':

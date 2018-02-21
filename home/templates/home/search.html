@@ -1,0 +1,56 @@
+{% extends 'home/base.html'%}
+
+{% load static %} <!-- REMOVE whenwe implement database images -->
+
+{% block body %}
+    <!-- body content for home page -->
+    <div class="container-fluid">
+        <div class="w-100" style="height:100px;"></div>
+        <div class="col">
+        </div>
+        <form class="form-inline" method="GET" action="{% url 'search' %}">
+            <div class="col">
+                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
+            </div>
+            <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
+            <div class="col-auto">
+                <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
+            </div>
+        </form>
+        <div class="w-100" style="height:100px;"></div>
+        <h2>Search Results:</h2>
+        <!--<div>
+          {% if rooms %}
+            <ul>
+            {% for room in rooms %}
+              <li> <a href="{% url 'detail' room.id %}">{{ room.host_name }}</a> </li>
+            {% endfor %}
+            </ul>
+          {% endif %}
+
+        </div>-->
+        <div class="card-deck">
+            {% if rooms %}
+                {% for room in rooms %}
+                    <div class="card">
+                        <a href="{% url 'detail' room.id %}">
+                            <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
+                        <div class="card-body">
+                            <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
+                            <p class="card-text">{{ room.description|truncatewords:23 }}</p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">{{ room.address }}</li>
+                            <li class="list-group-item">${{ room.cost }}</li>
+                        </ul>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h1>There are no rooms that match your search terms.</h1>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
