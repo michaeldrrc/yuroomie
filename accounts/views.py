@@ -26,6 +26,8 @@ def edit_profile(request):
          user = request.user
          profile = Profile.objects.get(user=user)
          profile.major = request.POST['major']
+         profile.year = request.POST['year']
+         profile.gender = request.POST['gender']
          profile.save()
          return render(request, 'signup_success.html')
     return render(request, 'edit_profile.html')
