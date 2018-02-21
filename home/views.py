@@ -19,14 +19,8 @@ def browse_rooms(request):
     except PageNotAnInteger:
         rooms = paginator.page(1)
     except EmptyPage:
-<<<<<<< HEAD
         page = paginator.page(paginator.num_pages)
-    return render(request, 'home/browse.html', {'page': page,
-                                                'rooms': rooms})
-=======
-        pasts = paginator.page(paginator.num_pages)
     return render(request, 'home/browse.html', {'page': page, 'rooms': rooms})
->>>>>>> 98a24a2ba1b272c97c6ca404b479b728ef927264
 
 def detail(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
@@ -38,7 +32,6 @@ def search(request):
     query_set = request.GET
     if 'q' in query_set:
         print('Search request: {}'.format(request.GET['q']))
-
         # check all Room variables in order of importance >>
         ##  property_name > host_name > address > description
         for room in Room.objects.all():
