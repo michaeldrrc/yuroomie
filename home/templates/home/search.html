@@ -18,10 +18,10 @@
             </div>
         </form>
         <div class="w-100" style="height:100px;"></div>
-        <h1>Latest Listings</h1>
+        <h2>Search Results:</h2>
         <div class="card-deck">
-            {% if latest_posts_list %}
-                {% for room in latest_posts_list %}
+            {% if rooms %}
+                {% for room in rooms %}
                     <div class="card">
                         <a href="{% url 'detail' room.id %}">
                             <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
@@ -39,7 +39,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h1>No rooms are available.</h1>
+                <h1>There are no rooms that match your search terms.</h1>
             {% endif %}
         </div>
     </div>
