@@ -1,0 +1,33 @@
+{% extends 'base.html'%}
+
+{% block body %}
+
+<!--  
+    user name
+-->
+<form action="{% url 'profile' %}" method="post" enctype="multipart/form-data">
+    <div class="row col-md-6">
+        <h2>Profile</h2>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">First Name:</div>
+            </div>
+            <input type="text" class="form-control" id="name" value="{{user.first_name}}" disabled>
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Last Name:</div>
+            </div>
+            <input type="text" class="form-control" id="name" value="{{user.last_name}}" disabled>
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <div class="input-group-text">Email:</div>
+            </div>
+            <input type="text" class="form-control" id="email" value="{{user.email}}" disabled>
+        </div>
+    </div>
+</form>
+
+
+{% endblock %}

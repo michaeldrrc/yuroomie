@@ -50,3 +50,6 @@ def user_listings(request):
         if request.user.pk == room.creator_id:
             user_listings.append(room)
     return render(request, 'accounts/your_listings.html', {'user_listings': user_listings})
+
+def profile(request):
+    return render(request, 'profile.html')
