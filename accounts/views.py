@@ -14,7 +14,7 @@ def signup(request):
                                 password=uf.cleaned_data['password1'],)
             if user is not None:
                 login(request, user)
-                userprofile = Profile(user=user)
+                userprofile = Profile(user=user, year=1)
                 userprofile.save()
                 return redirect('edit_profile')
     else:
