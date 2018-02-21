@@ -27,27 +27,29 @@ def detail(request, room_id):
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
 def search(request):
-    try:
-        result_list = []
+    result_list = []
+    query_set = request.GET
+    if 'q' in query_set:
         print('Search request: {}'.format(request.GET['q']))
 
         # check all Room variables in order of importance >>
         ##  property_name > host_name > address > description
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.property_name.lower():
+            if query_set['q'].lower() in room.property_name.lower():
                 result_list.append(room)
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.host_name.lower() and room not in result_list:
+            if query_set['q'].lower() in room.host_name.lower() and room not in result_list:
                 result_list.append(room)
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.address.lower() and room not in result_list:
+            if query_set['q'].lower() in room.address.lower() and room not in result_list:
                 result_list.append(room)
         for room in Room.objects.all():
-            if request.GET['q'].lower() in room.description.lower() and room not in result_list:
+            if query_set['q'].lower() in room.description.lower() and room not in result_list:
                 result_list.append(room)
-    except KeyError:
-        # no request or invalid query variable (not 'q') used
-        print("No search term provided")
+
+    if 'filer' in query_set:
+        print(query_set['filter'])
+    else: print("No request")
 
     return render(request, 'home/search.html', {'rooms': result_list})
 
