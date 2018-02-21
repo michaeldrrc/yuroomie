@@ -8,7 +8,7 @@
         <div class="w-100" style="height:100px;"></div>
         <div class="col">
         </div>
-        <form class="form-inline" method="GET" value="{{ request.GET.get }}">
+        <form class="form-inline" method="GET" action="{% url 'search' %}">
             <div class="col">
                 <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
             </div>

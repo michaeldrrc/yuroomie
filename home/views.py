@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -26,6 +26,17 @@ def detail(request, room_id):
     room = get_object_or_404(Room, pk=room_id)
     roomImages = list(room.roomimage_set.all())
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
+
+def search(request):
+    if request.method == 'GET':
+        room_id = None
+        print('Search request: {}'.format(request.GET['q']))
+        for room in Room.objects.all():
+            if room.host_name == request.GET['q']:
+                room_id = room.id
+                return redirect('/r/{}/'.format(room_id))
+        else: return redirect('/'.format(room_id))
+
 
 def create(request):
     if request.method == 'POST':
