@@ -19,16 +19,6 @@
         </form>
         <div class="w-100" style="height:100px;"></div>
         <h2>Search Results:</h2>
-        <!--<div>
-          {% if rooms %}
-            <ul>
-            {% for room in rooms %}
-              <li> <a href="{% url 'detail' room.id %}">{{ room.host_name }}</a> </li>
-            {% endfor %}
-            </ul>
-          {% endif %}
-
-        </div>-->
         <div class="card-deck">
             {% if rooms %}
                 {% for room in rooms %}
