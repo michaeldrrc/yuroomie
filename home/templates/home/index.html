@@ -10,7 +10,7 @@
         </div>
         <form class="form-inline" method="GET" action="{% url 'search' %}">
             <div class="col">
-                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
+                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;North York&quot;" autocomplete="off">
             </div>
             <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
             <div class="col-auto">
@@ -18,7 +18,7 @@
             </div>
         </form>
         <div class="w-100" style="height:100px;"></div>
-        <h1>Latest Listings</h1>
+        <h1>Latest Listings<span><a class="nav-link" href="{% url 'browse' %}">see more</a></span></h1>
         <div class="card-deck">
             {% if latest_posts_list %}
                 {% for room in latest_posts_list %}

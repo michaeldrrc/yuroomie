@@ -8,7 +8,7 @@
     <div class="form-row">
         <div class="form-group col-md-6">
             <label for="majorInput">Major</label>
-            <input type="text" name="major" id="majorInput" class="form-control" placeholder="Enter Major">
+            <input type="text" name="major" value="{{profile.major}}" id="majorInput" class="form-control" placeholder="Enter Major">
         </div>
     </div>
 
@@ -16,22 +16,21 @@
         <div class="form-group col-md-3">
             <label for="exampleFormControlSelect1">Year</label>
             <select class="form-control" id="exampleFormControlSelect1" name="year">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4+</option>
+            <option {% if profile.year == 1 %}selected{% endif %} value="1">1</option>
+            <option {% if profile.year == 2 %}selected{% endif %} value="2">2</option>
+            <option {% if profile.year == 3 %}selected{% endif %} value="3">3</option>
+            <option {% if profile.year == 4 %}selected{% endif %} value="4">4+</option>
             </select>
         </div>
         <div class="form-group col-md-3">
             <label for="genderSelect">Gender</label>
             <select class="form-control" id="exampleFormControlSelect1" name="gender">
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-                <option value="o">Other</option>
+                <option {% if profile.gender == 'm' %}selected{% endif %} value="m">Male</option>
+                <option {% if profile.gender == 'f' %}selected{% endif %} value="f">Female</option>
+                <option {% if profile.gender == 'o' %}selected{% endif %} value="o">Other</option>
             </select>
         </div>
     </div>
-
     <br>
     <button class="btn btn-lg btn-danger" type="submit">Create Profile</button>
 </form>
