@@ -11,4 +11,5 @@ class RoomPostForm(ModelForm):
                     'cost', 
                     'number_of_rooms', 
                     'property_type',
-                    'garages']
+                    'garages',
+                    'creator_phone']

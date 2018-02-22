@@ -58,6 +58,7 @@
           </div>
       </div>
       <div class="col-md-6 col-sm-12">
+        <div class="col">
           <h3>Address</h3>
           <div class="form-group row col-md-10">
             <label for="inputAddress">Address</label>
@@ -76,6 +77,18 @@
             <label for="inputpostalcode">Postal Code</label>
             <input name="postalCode" type="text" class="form-control" id="inputpostalcode">
           </div>
+          </div>
+          <div class="col">
+            <h3>Contact Info</h3>
+            <div class="form-group row col-md-10">
+              <label for="inputEmail">Email</label>
+              <input name="email" type="text" class="form-control" id="inputEmail" value="{{user.email}}" disabled>
+            </div>
+            <div class="form-group col-sm-12 col-md-7 row">
+              <label for="inputPhone">Phone Number (Optional)</label>
+              <input name="creator_phone" type="text" class="form-control" id="inputPhone">
+            </div>
+        </div>
       </div>
   </div>
 

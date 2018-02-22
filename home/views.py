@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import RoomPostForm
 from .models import Room, RoomImage
+from accounts.models import Profile
 from django.contrib.auth.decorators import login_required
 
 def index(request):
@@ -97,6 +98,10 @@ def create(request):
             address += (request.POST['city'] + ', ON, ' + request.POST['postalCode'])
             new_room.address = address
             new_room.creator_id = request.user.pk
+            user = request.user
+            profile = Profile.objects.get(user=user)
+            new_room.creator_gender = profile.gender
+            new_room.creator_email = user.email
             new_room.save()
             # for each image uploaded, save it with it's parent room being the room we just created
             for i in request.FILES.getlist('images'):

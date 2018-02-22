@@ -20,6 +20,9 @@ class Room(models.Model):
     number_of_rooms = models.PositiveSmallIntegerField()
     garages = models.PositiveSmallIntegerField()
     creator_id = models.PositiveIntegerField()
+    creator_email = models.CharField(max_length=50)
+    creator_phone = models.CharField(max_length=14, default="", blank=True)
+    creator_gender = models.CharField(max_length=10)
     last_updated = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

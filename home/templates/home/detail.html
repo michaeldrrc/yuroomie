@@ -45,8 +45,8 @@
                 <h5 class="card-subtitle mb-2 text-muted">{{ room.host_name }}</h5>
                 <p id="address" class="card-text">{{ room.address }}</p>
                 <div id="map"></div>
-                <p>email<br>
-                if phone#</p>
+                <p>{{room.creator_email}}<br>
+                {% if room.phone_number %}{{room.creator_phone}}{% else %}Host did not provide a phone number{% endif %}</p>
             {% else %}
                 <a href="{% url 'signin' %}"><button class="btn btn-danger">Sign In to See More Info</button></a>
             {% endif %}
