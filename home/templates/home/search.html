@@ -1,103 +1,135 @@
-{% extends 'home/base.html'%}
-
-{% load static %} <!-- REMOVE whenwe implement database images -->
+{% extends 'home/base.html'%} {% load static %}
+<!-- REMOVE whenwe implement database images -->
 
 {% block body %}
-    <!-- body content for home page -->
-    <div class="container-fluid">
-        <div class="w-100" style="height:100px;"></div>
+
+<div class="container-fluid">
+    <div class="w-100" style="height:100px;"></div>
+    <div class="col">
+    </div>
+
+    {% if filters is not None %}
+    <a href="{% url 'search' %}?q={{ query }}">Clear Filters</a>
+    {% endif %}
+
+    <ul>
+        <b>Filters</b>
+        <li id='i1'></li>
+        <li id='i2'></li>
+        <li id='i3'></li>
+        <li id='i4'></li>
+        <li id='i5'></li>
+        <li id='i6'></li>
+    </ul>
+    <script>
+        // all values are 0 if no filter provided (except prh, which has value 99999)
+        var price_range_low = "{{ prl }}";
+        var price_range_high = "{{ prh }}";
+        var gender = "{{ gen }}";
+        var parking_spaces = "{{ par }}";
+        var num_rooms = "{{ rms }}";
+        var property_type = "{{ type }}";
+        document.getElementById('i1').innerHTML = "prl_" + price_range_low;
+        document.getElementById('i2').innerHTML = "prc_" + price_range_high;
+        document.getElementById('i3').innerHTML = "gen_" + gender;
+        document.getElementById('i4').innerHTML = "par_" + parking_spaces;
+        document.getElementById('i5').innerHTML = "rms_" + num_rooms;
+        document.getElementById('i6').innerHTML = "type_" + property_type;
+        
+    </script>
+
+    <form class="form-inline" method="GET" action="{% url 'search' %}">
         <div class="col">
+            <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;north york&quot;"
+                autocomplete="off">
         </div>
-
+        <div class="col-auto">
+            <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
+        </div>
         {% if filters is not None %}
-            <a href="{% url 'search' %}?q={{ query }}">Clear Filter</a>
-        {% endif %}
-        <script>
-            var price_range_low = "{{ prl }}";
-            var price_range_high = "{{ prh }}";
-            if (price_range_high != 99999 || price_range_low != 0) 
-                document.getElementById('filter').innerHTML = "Price Range: "
-                        + price_range_low + " - " + price_range_high;
-        </script>
-        <form class="form-inline" method="GET" action="{% url 'search' %}">
-            <div class="col">
-                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
-            </div>       
-            <div class="col-auto">
-                <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
-            </div>
-            {% if filters is not None %}
-                <input type="hidden" name="filter" value="{{ filters }}">
-            {% endif %}
-        </form>
+        <input type="hidden" name="filter" value="{{ filters }}"> {% endif %}
+    </form>
 
-        <div class="w-100" style="height:30px;"></div>
+    <div class="w-100" style="height:30px;"></div>
+
+    {% if sf == 's' %}
         <h2>Search Results:</h2>
         <h5>
-            There {% if num_results != 1%}are {{ num_results }} rooms that match{%else%}is 1 room that matches{% endif %}  "{{ query }}"
-            {% if filters is not None %} in the price range ${{ prl }} - ${{ prh }}{% endif %}.
+            There {% if num_results != 1%}are {{ num_results }} rooms that match{%else%}is 1 room that matches{% endif %} "{{ query }}".
         </h5>
-        <div class="row">
-            <div class="list-group list-group-flush">
+    {% elif sf == 'f' %}
+        <h2>Filter Results:</h2>
+        <h5>
+            There {% if num_results != 1%}are {{ num_results }} rooms that satisfy{%else%}is 1 room that satisfies{% endif %} your filters.
+        </h5>
+    {% elif sf == 'sf' %}
+        <h2>Filtered Search Results:</h2>
+        <h5>
+            There {% if num_results != 1%}are {{ num_results }} rooms that match{%else%}is 1 room that matches{% endif %} "{{ query }}"
+            and satisf{% if num_results == 1%}ies{%else%}y{%endif%} your filters.
+        </h5>
+    {% endif %}
+
+    <div class="row">
+
+        <div class="list-group list-group-flush">
             {% for room in rooms %}
             <div class="list-group-item">
                 <div class="row">
-                  <div class="col-12 col-md-2">
-                    <a href="{% url 'detail' room.id %}">
-                        <div class="img-thumbnail">
-                            <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic" >
-                        </div>
-                    </a>
-                  </div>
-        
-                  <div class="pl-3 col-12 col-md-10">
-                        <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
+                    <div class="col-12 col-md-2">
+                        <a href="{% url 'detail' room.id %}">
+                            <div class="img-thumbnail">
+                                <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic">
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="pl-3 col-12 col-md-10">
+                        <a href="{% url 'detail' room.id %}">
+                            <h4 class="card-title m-1">{{ room.property_name }}</h4>
+                        </a>
                         <p class="m-1">{{ room.address}}</p>
                         <p class="m-1">${{ room.cost}}</p>
                         <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
-                  </div>
+                    </div>
                 </div>
                 <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>
-              </div>
-              {% endfor %}
             </div>
-          </div>
-          <div class="row" id="pagination-navbar">
-            {% if rooms.has_other_pages %}
-            <nav class="align-bottom" aria-label="...">
-                <ul class="pagination">
-                    {% if rooms.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.previous_page_number }}">Previous</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Previous</a>
-                        </li>
-                    {% endif %}
-                    {% for i in rooms.paginator.page_range %}
-                        {% if rooms.number == i %}
-                            <li class="page-item active">
-                                <a class="page-link" href=>{{ i }}</a>
-                            </li>
-                        {% else %}
-                            <li class="page-item">
-                                <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ i }}">{{ i }}</a>
-                            </li>
-                        {% endif %}
-                    {% endfor %}
-                    {% if rooms.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.next_page_number }}">Next</a>
-                        </li>
-                    {% else %}
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">Next</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
-          </div>
+            {% endfor %}
+        </div>
     </div>
+    <div class="row" id="pagination-navbar">
+        {% if rooms.has_other_pages %}
+        <nav class="align-bottom" aria-label="...">
+            <ul class="pagination">
+                {% if rooms.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.previous_page_number }}">Previous</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+                {% endif %} {% for i in rooms.paginator.page_range %} {% if rooms.number == i %}
+                <li class="page-item active">
+                    <a class="page-link" href=>{{ i }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ i }}">{{ i }}</a>
+                </li>
+                {% endif %} {% endfor %} {% if rooms.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.next_page_number }}">Next</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
