@@ -1,42 +1,16 @@
 {% extends 'home/base.html'%} {% load static %}
 <!-- REMOVE whenwe implement database images -->
 
+{% block head %}
+    <script type="text/javascript" src="{% static 'home/js/search.js' %}"></script>
+{% endblock %}
+
 {% block body %}
 
 <div class="container-fluid">
     <div class="w-100" style="height:100px;"></div>
     <div class="col">
     </div>
-
-    {% if filters is not None %}
-    <a href="{% url 'search' %}?q={{ query }}{% if sort != 'none' %}&sort={{ sort }}{% endif %}">Clear Filters</a>
-    {% endif %}
-
-    <ul>
-        <b>Filters</b>
-        <li id='i1'></li>
-        <li id='i2'></li>
-        <li id='i3'></li>
-        <li id='i4'></li>
-        <li id='i5'></li>
-        <li id='i6'></li>
-    </ul>
-    <script>
-        // all values are 0 if no filter provided (except prh, which has value 99999)
-        var price_range_low = "{{ prl }}";
-        var price_range_high = "{{ prh }}";
-        var gender = "{{ gen }}";
-        var parking_spaces = "{{ par }}";
-        var num_rooms = "{{ rms }}";
-        var property_type = "{{ type }}";
-        document.getElementById('i1').innerHTML = "prl_" + price_range_low;
-        document.getElementById('i2').innerHTML = "prh_" + price_range_high;
-        document.getElementById('i3').innerHTML = "gen_" + gender;
-        document.getElementById('i4').innerHTML = "par_" + parking_spaces;
-        document.getElementById('i5').innerHTML = "rms_" + num_rooms;
-        document.getElementById('i6').innerHTML = "type_" + property_type;
-        
-    </script>
 
     <form class="form-inline" method="GET" action="{% url 'search' %}">
         <div class="col">
@@ -55,7 +29,23 @@
 
     </form>
 
-    <div class="w-100" style="height:30px;"></div>
+    <div class="w-100" style="height:40px;"></div>
+    <div class="btn-group float-right">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {% if sort == 'last'%} Last Updated
+            {% elif sort == 'l2h'%} Price: Low to High
+            {% elif sort == 'h2l'%} Price: High to Low
+            {% else %} Sort By
+            {% endif %}
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="{% url 'search' %}?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&sort=last">Last Updated</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'search'  %}?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&sort=l2h">Price: Low to High</a>
+            <a class="dropdown-item" href="{% url 'search' %}?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&sort=h2l">Price: High to Low</a>
+        </div>
+    </div>
+    <div class="w-100" style="height:60px;"></div>
 
     {% if sf == 's' %}
         <h2>Search Results:</h2>
@@ -76,10 +66,10 @@
     {% endif %}
 
     <div class="row">
-
+        <div class='col-md-9 col-sm-10'>
         <div class="list-group list-group-flush">
             {% for room in rooms %}
-            <div class="list-group-item">
+            <div class="list-group-item bg-light">
                 <div class="row">
                     <div class="col-12 col-md-2">
                         <a href="{% url 'detail' room.id %}">
@@ -107,6 +97,156 @@
             {% endfor %}
         </div>
     </div>
+
+                
+    <div class="col-md-3 col-sm-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                <h4 class="card-title text-center">Filter</h4><br>
+                    <div class="buttonalign">
+                        <div class="form-button">
+                            <form id='filterForm' method="GET" action="{% url 'search' %}">
+                                <input type="hidden" name="q" value="{{ query }}">
+                                {% if sort != 'none' %}
+                                    <input type="hidden" name="sort" value="{{ sort }}">
+                                {% endif %}
+                                <input id='filter_for_form' type="hidden" name="filter" value="">
+                                <button class="btn btn-md btn-primary btn-block" id='filter_submit'>Apply Filters</button>
+                            </form> 
+                        </div>
+                    </div>
+                    
+                    <br>
+
+                    <h6 class="card-text">Price</h6>
+                    <div class="form-check">
+                        <div class="row">
+                            <div class="col">
+                                <input name="exampleMin" type="text" class="form-control" id="minPrice" placeholder="$Min">
+                            </div>
+                            <div class="col">
+                                <label for="min" class="sr-only">$</label>
+                                <input name="exampleMax" type="text" class="form-control" id="maxPrice" placeholder="$Max">
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <h6 class="card-text">Type</h6>
+                    <div class="form-check">
+                        <input id='apart' name="exampleRadio1" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Apartment
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='condo' name="exampleRadio2" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Condo
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='house' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            House
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='town' name="exampleRadio4" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Townhouse
+                        </label>
+                    </div>
+
+                    <br>
+
+                    <h6 class="card-text">Gender</h6>
+                    <div class="form-check">
+                        <input id='male' name="exampleRadio1" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='female' name="exampleRadio2" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Female
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='other' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Other
+                        </label>
+                    </div>
+
+                    <br>
+
+                    <h6 class="card-text">Parking</h6>
+                    <div class="form-check">
+                        <input id='park1' name="exampleRadio1" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            1 Space
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='park2' name="exampleRadio2" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            2 Spaces
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='park3' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            3 Spaces
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='park4' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            4+ Spaces
+                        </label>
+                    </div>
+
+                    <br>
+
+                    <h6 class="card-text">Rooms</h6>
+                    <div class="form-check">
+                        <input id='room1' name="exampleRadio1" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            1 Room
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='room2' name="exampleRadio2" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            2 Rooms
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='room3' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            3 Rooms
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input id='room4' name="exampleRadio3" class="form-check-input" type="checkbox" value="">
+                        <label class="form-check-label" for="defaultCheck1">
+                            4+ Rooms
+                        </label>
+                    </div>
+                    <br>
+                    <div class="buttonalign">
+                        <div class="form-button">
+                            <a href="{% url 'search' %}?q={{ query }}{% if sort != 'none' %}&sort={{ sort }}{% endif %}"><button class="btn btn-md btn-block btn-danger" name="clear">Clear</button></a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+</div>
+  
+
     <div class="row" id="pagination-navbar">
         {% if rooms.has_other_pages %}
         <nav class="align-bottom" aria-label="...">
@@ -145,4 +285,44 @@
         {% endif %}
     </div>
 </div>
+<script>
+
+        // booleans
+        var price_range_low = "{{ prl }}";
+        var price_range_high = "{{ prh }}";
+        var gen_male = "{{ gen_m }}";
+        var gen_female = "{{ gen_f }}";
+        var gen_other = "{{ gen_o }}";
+        var type_house = "{{ type_h }}";
+        var type_townhouse = "{{ type_t }}";
+        var type_apartment = "{{ type_a }}";
+        var type_condo = "{{ type_c }}";
+        var rms_1 = "{{ rms_1 }}";
+        var rms_2 = "{{ rms_2 }}";
+        var rms_3 = "{{ rms_3 }}";
+        var rms_4 = "{{ rms_4 }}";
+        var par_1 = "{{ par_1 }}";
+        var par_2 = "{{ par_2 }}";
+        var par_3 = "{{ par_3 }}";
+        var par_4 = "{{ par_4 }}";
+
+        if(price_range_low != '0') document.getElementById('minPrice').value = price_range_low;
+        if(price_range_high != '99999') document.getElementById('maxPrice').value = price_range_high;
+        if(gen_male=='true') document.getElementById('male').checked = true;
+        if(gen_female=='true') document.getElementById('female').checked = true;
+        if(gen_other=='true') document.getElementById('other').checked = true;
+        if(type_house=='true') document.getElementById('house').checked = true;
+        if(type_townhouse=='true') document.getElementById('town').checked = true;
+        if(type_condo=='true') document.getElementById('condo').checked = true;
+        if(type_apartment=='true') document.getElementById('apart').checked = true;
+        if(rms_1=='true') document.getElementById('room1').checked = true;
+        if(rms_2=='true') document.getElementById('room2').checked = true;
+        if(rms_3=='true') document.getElementById('room3').checked = true;
+        if(rms_4=='true') document.getElementById('room4').checked = true;
+        if(par_1=='true') document.getElementById('park1').checked = true;
+        if(par_2=='true') document.getElementById('park2').checked = true;
+        if(par_3=='true') document.getElementById('park3').checked = true;
+        if(par_4=='true') document.getElementById('park4').checked = true;
+
+    </script>
 {% endblock %}
