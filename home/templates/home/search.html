@@ -8,39 +8,96 @@
         <div class="w-100" style="height:100px;"></div>
         <div class="col">
         </div>
+
+        {% if filters is not None %}
+            <a href="{% url 'search' %}?q={{ query }}">Clear Filter</a>
+        {% endif %}
+        <script>
+            var price_range_low = "{{ prl }}";
+            var price_range_high = "{{ prh }}";
+            if (price_range_high != 99999 || price_range_low != 0) 
+                document.getElementById('filter').innerHTML = "Price Range: "
+                        + price_range_low + " - " + price_range_high;
+        </script>
         <form class="form-inline" method="GET" action="{% url 'search' %}">
             <div class="col">
                 <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;village east&quot;" autocomplete="off">
-            </div>
-            <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
+            </div>       
             <div class="col-auto">
                 <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
             </div>
-        </form>
-        <div class="w-100" style="height:100px;"></div>
-        <h2>Search Results:</h2>
-        <div class="card-deck">
-            {% if rooms %}
-                {% for room in rooms %}
-                    <div class="card">
-                        <a href="{% url 'detail' room.id %}">
-                            <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
-                        <div class="card-body">
-                            <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
-                            <p class="card-text">{{ room.description|truncatewords:23 }}</p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">{{ room.address }}</li>
-                            <li class="list-group-item">${{ room.cost }}</li>
-                        </ul>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <h1>There are no rooms that match your search terms.</h1>
+            {% if filters is not None %}
+                <input type="hidden" name="filter" value="{{ filters }}">
             {% endif %}
-        </div>
+        </form>
+
+        <div class="w-100" style="height:30px;"></div>
+        <h2>Search Results:</h2>
+        <h5>
+            There {% if num_results != 1%}are {{ num_results }} rooms that match{%else%}is 1 room that matches{% endif %}  "{{ query }}"
+            {% if filters is not None %} in the price range ${{ prl }} - ${{ prh }}{% endif %}.
+        </h5>
+        <div class="row">
+            <div class="list-group list-group-flush">
+            {% for room in rooms %}
+            <div class="list-group-item">
+                <div class="row">
+                  <div class="col-12 col-md-2">
+                    <a href="{% url 'detail' room.id %}">
+                        <div class="img-thumbnail">
+                            <img src="{{ room.roomimage_set.all.0.image.url }}" alt="pic" >
+                        </div>
+                    </a>
+                  </div>
+        
+                  <div class="pl-3 col-12 col-md-10">
+                        <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
+                        <p class="m-1">{{ room.address}}</p>
+                        <p class="m-1">${{ room.cost}}</p>
+                        <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
+                  </div>
+                </div>
+                <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="row" id="pagination-navbar">
+            {% if rooms.has_other_pages %}
+            <nav class="align-bottom" aria-label="...">
+                <ul class="pagination">
+                    {% if rooms.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.previous_page_number }}">Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for i in rooms.paginator.page_range %}
+                        {% if rooms.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link" href=>{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if rooms.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.next_page_number }}">Next</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+          </div>
     </div>
 {% endblock %}
