@@ -71,13 +71,13 @@ def search(request):
                 context['prh'] = filter_dict['prh']
                 result_list = result_list.filter(cost__lte=context['prh'])
             else:
-                context['prh'] = 'false'
+                context['prh'] = '99999'
 
             #price range low
             if 'prl' in filter_dict:
                 context['prl'] = filter_dict['prl']
                 result_list = result_list.filter(cost__gte=context['prl'])
-            else: context['prl'] = 'false'
+            else: context['prl'] = '0'
 
             ##pre
             context['gen_m'] = 'false'
@@ -140,8 +140,8 @@ def search(request):
         except ValueError:
             pass  
     else:
-        context['prh'] = 'false'
-        context['prl'] = 'false'
+        context['prh'] = '99999'
+        context['prl'] = '0'
         context['gen_m'] = 'false'
         context['gen_f'] = 'false'
         context['gen_o'] = 'false'

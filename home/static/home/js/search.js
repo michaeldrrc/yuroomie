@@ -8,13 +8,13 @@ function submitForm() {
     if(document.getElementById('minPrice').value!='') {
         if(!first) string += "~";
         else first = false;
-        string+="prl=" += document.getElementById('minPrice').value;
+        string+="prl=" + document.getElementById('minPrice').value;
     }
 
     if(document.getElementById('maxPrice').value!='') {
         if(!first) string += "~";
         else first = false;
-        string+="prh=" += document.getElementById('maxPrice').value;
+        string+="prh=" + document.getElementById('maxPrice').value;
     }
 
     if(document.getElementById('male').checked || 
@@ -67,7 +67,6 @@ function submitForm() {
         if(document.getElementById('park4').checked) string+=4;
     }       
 
-    window.alert(string);
     document.getElementById('filter_for_form').value = string;
     document.getElementById('filterForm').submit();
 }

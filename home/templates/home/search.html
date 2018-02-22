@@ -306,8 +306,8 @@
         var par_3 = "{{ par_3 }}";
         var par_4 = "{{ par_4 }}";
 
-        if(price_range_low != 0) document.getElementById('minPrice').value = price_range_low;
-        if(price_range_high != 99999) document.getElementById('maxPrice').value = price_range_high;
+        if(price_range_low != '0') document.getElementById('minPrice').value = price_range_low;
+        if(price_range_high != '99999') document.getElementById('maxPrice').value = price_range_high;
         if(gen_male=='true') document.getElementById('male').checked = true;
         if(gen_female=='true') document.getElementById('female').checked = true;
         if(gen_other=='true') document.getElementById('other').checked = true;
