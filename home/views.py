@@ -19,7 +19,7 @@ def browse_rooms(request):
     except PageNotAnInteger:
         rooms = paginator.page(1)
     except EmptyPage:
-        pasts = paginator.page(paginator.num_pages)
+        page = paginator.page(paginator.num_pages)
     return render(request, 'home/browse.html', {'page': page, 'rooms': rooms})
 
 def detail(request, room_id):
@@ -28,6 +28,8 @@ def detail(request, room_id):
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
 def search(request):
+    RESULTS_PER_PAGE = 2
+
     result_list = Room.objects.all()
     query_dict = request.GET
     context = {}
@@ -66,8 +68,17 @@ def search(request):
         context['prl'] = 0
         filters = None
         print("No filter request")
+
+    paginator = Paginator(result_list, RESULTS_PER_PAGE)
+    page = request.GET.get('page')
+    try:
+        rooms = paginator.page(page)
+    except PageNotAnInteger:
+        rooms = paginator.page(1)
+    except EmptyPage:
+        page = paginator.page(paginator.num_pages)
     
-    context['rooms'] = result_list
+    context['rooms'] = rooms
     context['num_results'] = len(result_list)
 
     return render(request, 'home/search.html', context)
