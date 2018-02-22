@@ -3,35 +3,61 @@
 {% block body %}
 <form method='post' action="{% url 'edit_profile' %}">
     {% csrf_token %}
-    <h2>Create Profile</h2>
-
-    <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="majorInput">Major</label>
-            <input type="text" name="major" value="{{profile.major}}" id="majorInput" class="form-control" placeholder="Enter Major">
+    <h1>Edit Profile</h1>
+    <div class="w-100" style="height:50px;"></div>
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <h3>Your Account</h3>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="fName">First Name</label>
+                    <input type="text" name="fName" value="{{user.first_name}}" id="fName" class="form-control" placeholder="Enter First Name" disabled>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="lName">Last Name</label>
+                    <input type="text" name="lName" value="{{user.last_name}}" id="lName" class="form-control" placeholder="Enter Last Name" disabled> 
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" value="{{user.email}}" id="email" class="form-control" placeholder="Enter Email" disabled>
+                </div>
+            </div>
         </div>
-    </div>
+        <div class="col-md-6 col-sm-12">
+            <h3>Your Profile</h3>
+            <div class="form-row">
+                <div class="form-group col-md-10">
+                    <label for="majorInput">Major</label>
+                    <input type="text" name="major" value="{{profile.major}}" id="majorInput" class="form-control" placeholder="Enter Major">
+                </div>
+            </div>
 
-    <div class="form-row">
-        <div class="form-group col-md-3">
-            <label for="exampleFormControlSelect1">Year</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="year">
-            <option {% if profile.year == 1 %}selected{% endif %} value="1">1</option>
-            <option {% if profile.year == 2 %}selected{% endif %} value="2">2</option>
-            <option {% if profile.year == 3 %}selected{% endif %} value="3">3</option>
-            <option {% if profile.year == 4 %}selected{% endif %} value="4">4+</option>
-            </select>
-        </div>
-        <div class="form-group col-md-3">
-            <label for="genderSelect">Gender</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="gender">
-                <option {% if profile.gender == 'm' %}selected{% endif %} value="m">Male</option>
-                <option {% if profile.gender == 'f' %}selected{% endif %} value="f">Female</option>
-                <option {% if profile.gender == 'o' %}selected{% endif %} value="o">Other</option>
-            </select>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="exampleFormControlSelect1">Year</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="year">
+                    <option {% if profile.year == 1 %}selected{% endif %} value="1">1</option>
+                    <option {% if profile.year == 2 %}selected{% endif %} value="2">2</option>
+                    <option {% if profile.year == 3 %}selected{% endif %} value="3">3</option>
+                    <option {% if profile.year == 4 %}selected{% endif %} value="4">4+</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="genderSelect">Gender</label>
+                    <select class="form-control" id="exampleFormControlSelect1" name="gender">
+                        <option {% if profile.gender == 'm' %}selected{% endif %} value="m">Male</option>
+                        <option {% if profile.gender == 'f' %}selected{% endif %} value="f">Female</option>
+                        <option {% if profile.gender == 'o' %}selected{% endif %} value="o">Other</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
     <br>
-    <button class="btn btn-lg btn-danger" type="submit">Create Profile</button>
+    <button class="btn btn-lg btn-danger" type="submit">Save Profile</button>
 </form>
 {% endblock %}
