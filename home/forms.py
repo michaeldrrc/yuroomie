@@ -6,4 +6,9 @@ class RoomPostForm(ModelForm):
     """ inherits the Room model and casts as a form """
     class Meta:
         model = Room
-        fields = ['property_name', 'description', 'cost', 'number_of_rooms']
+        fields = ['property_name', 
+                    'description', 
+                    'cost', 
+                    'number_of_rooms', 
+                    'property_type',
+                    'garages']
