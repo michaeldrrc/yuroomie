@@ -36,7 +36,6 @@ def search(request):
     context = {}
     if 'q' in query_dict:
         query_q = context['query'] = query_dict['q']
-        print('Search request: {}'.format(query_q))
 
         result_list = result_list.filter(
             Q(property_name__icontains=query_q) |
@@ -44,11 +43,9 @@ def search(request):
             Q(address__icontains=query_q) |
             Q(description__icontains=query_q)
         )
-    else: print("No query request")
 
     if 'filter' in query_dict:
         filters = context['filters'] = query_dict['filter']
-        print('Filter request: {}'.format(query_dict['filter']))
         try:
             filter_dict = dict(item.split("=") for item in filters.split("~"))
             if 'prh' in filter_dict:
@@ -67,7 +64,6 @@ def search(request):
         context['prh'] = 99999
         context['prl'] = 0
         filters = None
-        print("No filter request")
 
     paginator = Paginator(result_list, RESULTS_PER_PAGE)
     page = request.GET.get('page')
