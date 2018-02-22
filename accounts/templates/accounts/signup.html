@@ -1,13 +1,49 @@
 {% extends 'base.html' %}
 
 {% block body %}
-  <h2>Sign up</h2>
+  <h2>Sign Up</h2>
   <form method="post" action="{% url 'signup' %}">
     {% csrf_token %}
-    {{userform}}
-    {{userprofileform}}
-    <button class="btn btn-primary" type="submit">Sign Up</button>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="usernameInput">Username</label>
+        <input type="text" name="username" class="form-control" placeholder="Username">  
+      </div>
+      <div class="form-group col-md-6">
+        <label for="exampleInputEmail1">Email Address</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email">  
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="firstnameInput">First Name</label>
+        <input type="text" name="first_name" class="form-control" placeholder="First Name">  
+      </div>
+      <div class="form-group col-md-6">
+        <label for="lastnameInput">Last Name</label>
+        <input type="text" name="last_name" class="form-control" placeholder="Last Name">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="passwordInput">Password</label>
+        <input type="password" name="password1" class="form-control" id="inputPassword5" placeholder="Password">  
+      </div>
+      <div class="form-group col-md-6">
+        <label for="passwordconfirmationInput">Password Confirmation</label>
+        <input type="password" name="password2" class="form-control" id="inputPassword6" placeholder="Confirm Password">
+      </div>
+    </div>
+    <small id="password Help Block" class="form-text text-muted">
+      Your password shouldn't be too similar to your other personal information,
+      must contain at least 8 characters, shouldn't be a commonly used password,
+      and shouldn't be entirely numeric.
+    </small>
+    <br>
+
+    <button class="btn btn-size btn-danger btn-lg" type="submit">Sign Up</button>
     </form>
-      
-  </form>
+    
 {% endblock %}

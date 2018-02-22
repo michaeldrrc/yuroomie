@@ -6,7 +6,7 @@ from home.models import Room
 
 def signup(request):
     if request.method == 'POST':
-        uf = UserRegistrationForm(request.POST, prefix='user')      # user account form
+        uf = UserRegistrationForm(request.POST)
         if uf.is_valid():
             user = uf.save()
             # sign the user in to their new account
@@ -18,7 +18,7 @@ def signup(request):
                 userprofile.save()
                 return redirect('edit_profile')
     else:
-        uf = UserRegistrationForm(prefix='user')
+        uf = UserRegistrationForm()
     return render(request, 'signup.html', {'userform': uf})
 
 def edit_profile(request):

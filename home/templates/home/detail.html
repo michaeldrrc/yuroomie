@@ -29,11 +29,13 @@
         </div>
     </div>
     <div class="col-md-4 col-sm-12">
-        <div class="card">
+        <div class="card bg-light">
             <div class="card-body">
             <h4 class="card-title">Host Contact Details</h4><br>
             {% if user.is_authenticated %}
                 <h5 class="card-subtitle mb-2">{{ room.host_name }}</h5>
+                <h5 class="card-subtitle mb-2 text-muted">Host Studies <span class="badge badge-dark">{{ room.creator_major }}</span></h5>
+                <h5 class="card-subtitle mb-2 text-muted">Year <span class="badge badge-dark">{{ room.creator_year }}</span></h5>
                 <h5 class="card-subtitle mb-2 text-muted">Host is {% if room.creator_gender == 'm' %}<span class="badge badge-primary">Male
                         {%elif room.creator_gender == 'f'%}<span class="badge badge-danger">Female
                         {% else %}<span class="badge badge-info">Other{%endif%}</span></h5>

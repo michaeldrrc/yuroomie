@@ -101,6 +101,8 @@ def create(request):
             user = request.user
             profile = Profile.objects.get(user=user)
             new_room.creator_gender = profile.gender
+            new_room.creator_major = profile.creator_major
+            new_room.creator_year = profile.year
             new_room.creator_email = user.email
             new_room.creator_phone = request.POST['creator_phone']
             new_room.save()
