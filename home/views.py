@@ -1,3 +1,5 @@
+import operator
+from functools import reduce
 from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from django.urls import reverse
@@ -31,14 +33,16 @@ def detail(request, room_id):
 def search(request):
     RESULTS_PER_PAGE = 10
 
-    result_list = Room.objects.all()
+    result_list = Room.objects.order_by('-last_updated')
     query_dict = request.GET
     context = {}
     search = True
 
     if 'sort' in query_dict:
         sort = context['sort'] = query_dict['sort']
-        if sort == 'l2h':
+        if sort == 'last':
+            pass
+        elif sort == 'l2h':
             result_list = result_list.order_by('cost')
         elif sort == 'h2l':
             result_list = result_list.order_by('-cost')
@@ -67,52 +71,92 @@ def search(request):
                 context['prh'] = filter_dict['prh']
                 result_list = result_list.filter(cost__lte=context['prh'])
             else:
-                context['prh'] = 99999
+                context['prh'] = 'false'
 
             #price range low
             if 'prl' in filter_dict:
                 context['prl'] = filter_dict['prl']
                 result_list = result_list.filter(cost__gte=context['prl'])
-            else:
-                context['prl'] = 0
-            
+            else: context['prl'] = 'false'
+
+            ##pre
+            context['gen_m'] = 'false'
+            context['gen_f'] = 'false'
+            context['gen_o'] = 'false'
+            context['par_1'] = 'false'
+            context['par_2'] = 'false'
+            context['par_3'] = 'false'
+            context['par_4'] = 'false'
+            context['rms_1'] = 'false'
+            context['rms_2'] = 'false'
+            context['rms_3'] = 'false'
+            context['rms_4'] = 'false'
+            context['type_a'] = 'false'
+            context['type_c'] = 'false'
+            context['type_t'] = 'false'
+            context['type_h'] = 'false'
+            ##
+        
             #gender
             if 'gen' in filter_dict:
-                 context['gen'] = filter_dict['gen']
-                 result_list = result_list.filter(gender__iexact=context['gen'])
-            else: context['gen'] = 0
+                context['gen'] = filter_dict['gen']
+                s = list(context['gen'])
+                for i in s:
+                    if i in {'m','f','o'}:
+                        context['gen_'+i] = 'true'
+                result_list = result_list.filter(reduce(
+                    operator.or_,  (Q(creator_gender__iexact=key) for key in s))) 
 
             #number of garages
             if 'par' in filter_dict:
                 context['par'] = filter_dict['par']
-                result_list = result_list.filter(garages__exact=context['par'])
-            else:
-                context['par'] = 0
+                s = list(str(context['par']))
+                for i in s:
+                    if i in {'1','2','3','4'}:
+                        context['par_'+i] = 'true'
+                result_list = result_list.filter(reduce(
+                    operator.or_,  (Q(garages__iexact=key) for key in s))) 
 
             #number of rooms
             if 'rms' in filter_dict:
                 context['rms'] = filter_dict['rms']
-                result_list = result_list.filter(number_of_rooms__exact=context['rms'])
-            else:
-                context['rms'] = 0
+                s = list(context['rms'])
+                for i in s:
+                    if i in {'1','2','3','4'}:
+                        context['rms_'+i] = 'true'
+                result_list = result_list.filter(reduce(
+                    operator.or_,  (Q(number_of_rooms__iexact=key) for key in s))) 
 
             #property type
             if 'type' in filter_dict:
                 context['type'] = filter_dict['type']
-                result_list = result_list.filter(property_type__exact=context['type'])
-            else:
-                context['type'] = 0 
+                s = list(context['type'])
+                for i in s:
+                    if i in {'a','c','t','h'}:
+                        context['type_'+i] = 'true'
+                result_list = result_list.filter(reduce(
+                    operator.or_,  (Q(property_type__iexact=key) for key in s)))           
             
         except ValueError:
-            # do not filter, no value for all keys
-            filters = None    
+            pass  
     else:
-        context['prh'] = 99999
-        context['prl'] = 0
-        context['gen'] = 0
-        context['par'] = 0
-        context['rms'] = 0
-        context['type'] = 0
+        context['prh'] = 'false'
+        context['prl'] = 'false'
+        context['gen_m'] = 'false'
+        context['gen_f'] = 'false'
+        context['gen_o'] = 'false'
+        context['par_1'] = 'false'
+        context['par_2'] = 'false'
+        context['par_3'] = 'false'
+        context['par_4'] = 'false'
+        context['rms_1'] = 'false'
+        context['rms_2'] = 'false'
+        context['rms_3'] = 'false'
+        context['rms_4'] = 'false'
+        context['type_a'] = 'false'
+        context['type_c'] = 'false'
+        context['type_t'] = 'false'
+        context['type_h'] = 'false'
         filters = None
 
     paginator = Paginator(result_list, RESULTS_PER_PAGE)
