@@ -12,50 +12,57 @@
   <div class="row">
       <div class="col-md-6 col-sm-12">
         <h3>Rental Info</h3>
-          <div class="form-group row col-md-10">
-            <label for="inputlsname">Listing Name</label>
-            <input name="property_name" type="text" class="form-control" id="inputlsname" placeholder="Listing Name">
-          </div>
-          <div class="form-group row col-md-4">
-            <label for"cost">Cost</label>
-            <div class="input-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">$</span>
-                </div>
-                <input type="text" class="form-control" name="cost" aria-label="Amount (to the nearest dollar)">
+            <div class="form-group row col-md-11">
+                <label for="inputlsname">Listing Name</label>
+                <input name="property_name" type="text" class="form-control" id="inputlsname" placeholder="Listing Name">
             </div>
-          </div>
-          <div class="form-group row col-md-4">
-              <label>Number of Rooms</label>
-              <select name="number_of_rooms" class="form-control">
-                  <option value='1'>1</option>
-                  <option value='2'>2</option>
-                  <option value='3'>3</option>
-                  <option value='4'>4+</option>
-              </select>
-          </div>
-          <div class="form-group row col-md-4">
-                <label>Parking Spots</label>
-                <select name="garages" class="form-control">
-                    <option value='1'>1</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4+</option>
-                </select>
-          </div>
-          <div class="form-group row col-md-4">
-                <label>Type of Property</label>
-                <select name="property_type" class="form-control">
-                    <option value='a'>Apartment</option>
-                    <option value='c'>Condo</option>
-                    <option value='h'>House</option>
-                    <option value='t'>Townhouse</option>
-                </select>
-          </div> 
-          <div class="form-group row col-md-10">
-              <label for="inputDescription">Description</label>
-              <textarea  name="description" maxlength="250" class="form-control" id="inputDescription"></textarea>
-          </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                        <label>Type of Property</label>
+                        <select name="property_type" class="form-control">
+                            <option value='a'>Apartment</option>
+                            <option value='c'>Condo</option>
+                            <option value='h'>House</option>
+                            <option value='t'>Townhouse</option>
+                        </select>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for"cost">Cost</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                        <span class="input-group-text">$</span>
+                        </div>
+                        <input type="text" class="form-control" name="cost" aria-label="Amount (to the nearest dollar)">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label>Number of Rooms</label>
+                    <select name="number_of_rooms" class="form-control">
+                        <option value='1'>1</option>
+                        <option value='2'>2</option>
+                        <option value='3'>3</option>
+                        <option value='4'>4+</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-5">
+                        <label>Parking Spots</label>
+                        <select name="garages" class="form-control">
+                            <option value='1'>1</option>
+                            <option value='2'>2</option>
+                            <option value='3'>3</option>
+                            <option value='4'>4+</option>
+                        </select>
+                </div> 
+            </div>
+            <div class="form-group row col-md-10">
+                <label for="inputDescription">Description</label>
+                <textarea  name="description" maxlength="250" class="form-control" id="inputDescription"></textarea>
+            </div>
+            <input type="file" name="images" multiple>
+            <div class="w-100" style="height:50px;"></div>
+            <button class="btn btn-lg btn-danger" type="submit">Create Listing</button>
       </div>
       <div class="col-md-6 col-sm-12">
         <div class="col">
@@ -91,9 +98,5 @@
         </div>
       </div>
   </div>
-
-  <input type="file" name="images" multiple>
-  <div class="w-100" style="height:50px;"></div>
-  <button class="btn btn-lg btn-danger" type="submit">Create Listing</button>
 </form>
 {% endblock %}
