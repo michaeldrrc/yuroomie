@@ -2,25 +2,18 @@
 
 {% load static %}
 
+{% block title %}
+    {{ room.property_name }}
+{% endblock %}
+
 {% block head %}
 <script type="text/javascript" src="{% static 'home/js/detail.js' %}"></script>
 {% endblock %}
 
 {% block body %}
+<div class="w-100" style="height:50px;"></div>
 <div class="row">
-    <div class="col-12">
-        <h1>{{ room.property_name }}</h1>
-    </div>
-    <div class="col-12">
-        <h4>{{ room.host_name }}</h4>
-    </div>
-    <div class="col-12">
-        <p class="text-muted">Last updated: {{ room.last_updated.date }}</p>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-4 col-sm-12">
         <div class="row">
             <div class="col-md-12">
                 <img src="{{ roomImages.0.image.url }}">
@@ -35,8 +28,65 @@
             </div>
         </div>
     </div>
-    <div class="col-md-6 col-sm-12">
-        <p>{{ room.description }}</p>
+    <div class="col-md-4 col-sm-12">
+        <h3>{% if room.property_type == 'a' %}Apartment
+                {% elif room.property_type == 'c' %}Condo
+                {% elif room.property_type == 't' %}Townhouse
+                {% else %} house {% endif %} - ${{room.cost}}/m</h3><br>
+        <h5>{{ room.description }}</h5><br>
+        <h5><span class="badge badge-danger">{{room.number_of_rooms}}</span> Room(s) Available</h5>
+        <h5><span class="badge badge-danger">{{room.garages}}</span> Parking Spot(s)</h5>
+    </div>
+    <div class="col-md-4 col-sm-12">
+        <div class="card">
+            <div class="card-body">
+            <h4 class="card-title">Host Contact Details</h4><br>
+            {% if user.is_authenticated %}
+                <h5 class="card-subtitle mb-2 text-muted">{{ room.host_name }}</h5>
+                <p id="address" class="card-text">{{ room.address }}</p>
+                <div id="map"></div>
+                <p>email<br>
+                if phone#</p>
+            {% else %}
+                <a href="{% url 'signin' %}"><button class="btn btn-danger">Sign In to See More Info</button></a>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+<br>
+<script>
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
+        center: {lat: 43.7735, lng: -79.5}
+        });
+        var geocoder = new google.maps.Geocoder();
+        geocodeAddress(geocoder, map);
+    }
+
+    function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('address').innerHTML;
+        geocoder.geocode({'address': address}, function(results, status) {
+        if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+            map: resultsMap,
+            position: results[0].geometry.location
+            });
+        } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+        }
+        });
+    }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdgUnGmwFjRBhpJ5lQu_5sJ3GNzn6k5bI&callback=initMap">
+    </script>
+<br>
+<div class="row">
+    <div class="col-12">
+        <p class="text-muted">Last updated: {{ room.last_updated.date }}</p>
     </div>
 </div>
 

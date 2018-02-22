@@ -10,7 +10,11 @@
         </div>
         <form class="form-inline" method="GET" action="{% url 'search' %}">
             <div class="col">
+<<<<<<< HEAD
                 <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;north york&quot;" autocomplete="off">
+=======
+                <input type="search" name="q" class="form-control form-control-lg" id="mainSearchBar" aria-describedby="searchHelp" placeholder="Try &quot;North York&quot;" autocomplete="off">
+>>>>>>> origin/master
             </div>
             <!-- ToDo: Disable form submit until user is signed in. Add a tooltip as well-->
             <div class="col-auto">
@@ -18,29 +22,34 @@
             </div>
         </form>
         <div class="w-100" style="height:100px;"></div>
-        <h1>Latest Listings</h1>
-        <div class="card-deck">
-            {% if latest_posts_list %}
-                {% for room in latest_posts_list %}
-                    <div class="card">
-                        <a href="{% url 'detail' room.id %}">
-                            <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
-                        <div class="card-body">
-                            <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
-                            <p class="card-text">{{ room.description|truncatewords:23 }}</p>
+        <div class="row">
+            <h1>Latest Listings</h1>
+            <a class="nav-link" href="{% url 'search' %}"><h5>see more</h5></a>
+        </div>
+        <div class="row">
+            <div class="card-deck">
+                {% if latest_posts_list %}
+                    {% for room in latest_posts_list %}
+                        <div class="card">
+                            <a href="{% url 'detail' room.id %}">
+                                <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
+                            <div class="card-body">
+                                <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
+                                <p class="card-text">{{ room.description|truncatewords:23 }}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{ room.address }}</li>
+                                <li class="list-group-item">${{ room.cost }}</li>
+                            </ul>
+                            <div class="card-footer">
+                                <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
+                            </div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">{{ room.address }}</li>
-                            <li class="list-group-item">${{ room.cost }}</li>
-                        </ul>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <h1>No rooms are available.</h1>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h1>No rooms are available.</h1>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -90,8 +90,17 @@
                         </a>
                         <p class="m-1">{{ room.address}}</p>
                         <p class="m-1">${{ room.cost}}</p>
+<<<<<<< HEAD
                         <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
                     </div>
+=======
+                        <p class="m-1">{% if room.property_type == 'a' %}Apartment
+                            {% elif room.property_type == 'c' %}Condo
+                            {% elif room.property_type == 't' %}Townhouse
+                            {% else %} house {% endif %}</p>
+                        <p class="m-1">{{ room.number_of_rooms}} Room(s) | {{ room.garages }} Parking</p>
+                  </div>
+>>>>>>> origin/master
                 </div>
                 <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>
             </div>

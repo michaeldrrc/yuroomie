@@ -23,14 +23,16 @@ def signup(request):
 
 def edit_profile(request):
     if request.method == 'POST':
-         user = request.user
-         profile = Profile.objects.get(user=user)
-         profile.major = request.POST['major']
-         profile.year = request.POST['year']
-         profile.gender = request.POST['gender']
-         profile.save()
-         return render(request, 'signup_success.html')
-    return render(request, 'edit_profile.html')
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        profile.major = request.POST['major']
+        profile.year = request.POST['year']
+        profile.gender = request.POST['gender']
+        profile.save()
+        return render(request, 'signup_success.html')
+    user = request.user
+    profile = Profile.objects.get(user=user)
+    return render(request, 'edit_profile.html', {'profile': profile})
 
 
 def signin(request):
@@ -42,9 +44,10 @@ def signin(request):
                                 password=cd['password'])
             if user is not None:
                 login(request, user)
-                return redirect('profile')
+                return redirect('index')
             else:
-                return render(request, 'signin.html', {'loginForm': loginForm})
+                return render(request, 'signin.html', {'loginForm': loginForm,
+                                                        'error_message': 'Your username and password did not match our records'})
     else:
         loginForm = LoginForm(request.POST)
     return render(request, 'signin.html', {'loginForm': loginForm})
@@ -60,6 +63,3 @@ def user_listings(request):
         if request.user.pk == room.creator_id:
             user_listings.append(room)
     return render(request, 'accounts/your_listings.html', {'user_listings': user_listings})
-
-def profile(request):
-    return render(request, 'profile.html')
