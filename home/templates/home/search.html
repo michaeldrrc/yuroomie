@@ -9,7 +9,7 @@
     </div>
 
     {% if filters is not None %}
-    <a href="{% url 'search' %}?q={{ query }}">Clear Filters</a>
+    <a href="{% url 'search' %}?q={{ query }}{% if sort != 'none' %}&sort={{ sort }}{% endif %}">Clear Filters</a>
     {% endif %}
 
     <ul>
@@ -30,7 +30,7 @@
         var num_rooms = "{{ rms }}";
         var property_type = "{{ type }}";
         document.getElementById('i1').innerHTML = "prl_" + price_range_low;
-        document.getElementById('i2').innerHTML = "prc_" + price_range_high;
+        document.getElementById('i2').innerHTML = "prh_" + price_range_high;
         document.getElementById('i3').innerHTML = "gen_" + gender;
         document.getElementById('i4').innerHTML = "par_" + parking_spaces;
         document.getElementById('i5').innerHTML = "rms_" + num_rooms;
@@ -46,8 +46,13 @@
         <div class="col-auto">
             <button type="submit" class="btn btn-danger form-control-lg" id="mainSearchButton">Search</button>
         </div>
+        {% if sort != 'none' %}
+            <input type="hidden" name="sort" value="{{ sort }}">
+        {% endif %}
         {% if filters is not None %}
-        <input type="hidden" name="filter" value="{{ filters }}"> {% endif %}
+            <input type="hidden" name="filter" value="{{ filters }}">
+        {% endif %}
+
     </form>
 
     <div class="w-100" style="height:30px;"></div>
@@ -90,17 +95,12 @@
                         </a>
                         <p class="m-1">{{ room.address}}</p>
                         <p class="m-1">${{ room.cost}}</p>
-<<<<<<< HEAD
-                        <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
-                    </div>
-=======
                         <p class="m-1">{% if room.property_type == 'a' %}Apartment
                             {% elif room.property_type == 'c' %}Condo
                             {% elif room.property_type == 't' %}Townhouse
-                            {% else %} house {% endif %}</p>
+                            {% else %} House {% endif %}</p>
                         <p class="m-1">{{ room.number_of_rooms}} Room(s) | {{ room.garages }} Parking</p>
                   </div>
->>>>>>> origin/master
                 </div>
                 <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>
             </div>
@@ -113,21 +113,25 @@
             <ul class="pagination">
                 {% if rooms.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.previous_page_number }}">Previous</a>
+                    <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}{% if sort != 'none' %}&sort={{ sort }}{% endif %}&page={{ rooms.previous_page_number }}">Previous</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">
                     <a class="page-link" href="#">Previous</a>
                 </li>
-                {% endif %} {% for i in rooms.paginator.page_range %} {% if rooms.number == i %}
+                {% endif %}
+                {% for i in rooms.paginator.page_range %}
+                    {% if rooms.number == i %}
                 <li class="page-item active">
                     <a class="page-link" href=>{{ i }}</a>
                 </li>
-                {% else %}
+                    {% else %}
                 <li class="page-item">
                     <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ i }}">{{ i }}</a>
                 </li>
-                {% endif %} {% endfor %} {% if rooms.has_next %}
+                    {% endif %}
+                {% endfor %}
+                {% if rooms.has_next %}
                 <li class="page-item">
                     <a class="page-link" href="?q={{ query }}{% if filters is not None %}&filter={{ filters }}{% endif %}&page={{ rooms.next_page_number }}">Next</a>
                 </li>

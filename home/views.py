@@ -29,25 +29,34 @@ def detail(request, room_id):
     return render(request, 'home/detail.html', {'room': room, 'roomImages': roomImages})
 
 def search(request):
-    RESULTS_PER_PAGE = 2
+    RESULTS_PER_PAGE = 10
 
     result_list = Room.objects.all()
     query_dict = request.GET
     context = {}
     search = True
 
+    if 'sort' in query_dict:
+        sort = context['sort'] = query_dict['sort']
+        if sort == 'l2h':
+            result_list = result_list.order_by('cost')
+        elif sort == 'h2l':
+            result_list = result_list.order_by('-cost')
+        else:
+            sort = 'none'
+    else:
+        context['sort'] = 'none'
+
     if 'q' in query_dict and query_dict['q'] is not "":
         query_q = context['query'] = query_dict['q']
 
         result_list = result_list.filter(
             Q(property_name__icontains=query_q) |
-            Q(host_name__icontains=query_q) |
             Q(address__icontains=query_q) |
             Q(description__icontains=query_q)
         )
     else:
         search = False
-
 
     if 'filter' in query_dict:
         filters = context['filters'] = query_dict['filter']
@@ -67,14 +76,11 @@ def search(request):
             else:
                 context['prl'] = 0
             
-            ## uncomment when gender is added to room ##
-            context['gen'] = 0
-        #     #gender
-        #    if 'gen' in filter_dict:
-        #         context['gen'] = filter_dict['gen']
-        #         result_list = result_list.filter(gender__iexact=context['gen'])
-        #     else:
-        #         context['gen'] = 0
+            #gender
+            if 'gen' in filter_dict:
+                 context['gen'] = filter_dict['gen']
+                 result_list = result_list.filter(gender__iexact=context['gen'])
+            else: context['gen'] = 0
 
             #number of garages
             if 'par' in filter_dict:
