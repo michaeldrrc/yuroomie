@@ -20,7 +20,9 @@
         <div class="w-100" style="height:100px;"></div>
         <div class="row">
             <h1>Latest Listings</h1>
-            <a class="nav-link" href="{% url 'search' %}"><h5>see more</h5></a>
+        </div>
+        <div class="row">
+            <a href="{% url 'search' %}"><h5>see more</h5></a>
         </div>
         <div class="row">
             <div class="card-deck">
@@ -47,5 +49,11 @@
                 {% endif %}
             </div>
         </div>
+        <div class="w-100" style="height:100px;"></div>
+        <ul class="nav justify-content-end">
+            <li class="nav-item">
+                <a class="nav-link" href="https://github.com/michaelroudnitski/yuroomie">Github</a>
+            </li>
+        </ul>
     </div>
 {% endblock %}

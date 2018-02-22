@@ -102,6 +102,7 @@ def create(request):
             profile = Profile.objects.get(user=user)
             new_room.creator_gender = profile.gender
             new_room.creator_email = user.email
+            new_room.creator_phone = request.POST['creator_phone']
             new_room.save()
             # for each image uploaded, save it with it's parent room being the room we just created
             for i in request.FILES.getlist('images'):
