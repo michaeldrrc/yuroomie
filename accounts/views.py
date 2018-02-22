@@ -1,4 +1,5 @@
-from .forms import UserRegistrationForm, UserProfileForm, LoginForm
+from .forms import UserRegistrationForm, LoginForm
+from .models import Profile
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from home.models import Room
@@ -6,22 +7,19 @@ from home.models import Room
 def signup(request):
     if request.method == 'POST':
         uf = UserRegistrationForm(request.POST, prefix='user')      # user account form
-        upf = UserProfileForm(request.POST, prefix='userprofile')   # user profile form
-        if uf.is_valid() * upf.is_valid():
+        if uf.is_valid():
             user = uf.save()
             # sign the user in to their new account
             user = authenticate(username=uf.cleaned_data['username'],
                                 password=uf.cleaned_data['password1'],)
             if user is not None:
                 login(request, user)
-                userprofile = upf.save(commit=False)
-                userprofile.user = user
+                userprofile = Profile(user=user)
                 userprofile.save()
                 return render(request, 'signup_success.html')
     else:
         uf = UserRegistrationForm(prefix='user')
-        upf = UserProfileForm(prefix='userprofile')
-    return render(request, 'signup.html', {'userform': uf, 'userprofileform': upf})
+    return render(request, 'signup.html', {'userform': uf})
 
 def signin(request):
     if request.method == 'POST':
@@ -32,7 +30,7 @@ def signin(request):
                                 password=cd['password'])
             if user is not None:
                 login(request, user)
-                return render(request, 'signup_success.html')
+                return redirect('profile')
             else:
                 return render(request, 'signin.html', {'loginForm': loginForm})
     else:
@@ -41,7 +39,7 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return render(request, 'signout_success.html')
+    return redirect('index')
 
 def user_listings(request):
     user_listings = []
