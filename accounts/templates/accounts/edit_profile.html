@@ -1,38 +1,52 @@
-{% extends 'base.html' %}
+{% extends 'base.html'%}
 
 {% block body %}
-<form method='post' action="{% url 'edit_profile' %}">
+
+<form action="{% url 'edit_profile' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <h2>Create Profile</h2>
-
+    <h3>Profile</h3>
     <div class="form-row">
-        <div class="form-group col-md-6">
-            <label for="majorInput">Major</label>
-            <input type="text" name="major" id="majorInput" class="form-control" placeholder="Enter Major">
+        <div class="col-md-6">
+            <div class="form-group row col-md-11">
+                <label for="fName">First name</label>
+                <input type="text" class="form-control" id="fName" value="{{user.first_name}}" required>
+            </div>
+            <div class="form-group row col-md-11">
+                <label for="lName">Last name</label>
+                <input type="text" class="form-control" id="lName" value="{{user.last_name}}" required>
+            </div>
+            <div class="form-group row col-md-11">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" value="{{user.email}}" required>
+            </div>
         </div>
-    </div>
 
-    <div class="form-row">
-        <div class="form-group col-md-3">
-            <label for="exampleFormControlSelect1">Year</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="year">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4+</option>
-            </select>
+        <div class="col-md-6">
+            <div class="form-group row col-md-11">
+                <label for="major">Major</label>
+                <input type="text" class="form-control" id="major" value="{{profile.major}}" required>
+            </div>
+            <div class="form-group row col-md-11">
+                <label for="year">Year of Study</label>
+                <select id="gender" class="custom-select">
+                    <option {% if profile.year == 1 %}selected{% endif %} value='1'>1</option>
+                    <option {% if profile.year == 2 %}selected{% endif %} value='2'>2</option>
+                    <option {% if profile.year == 3 %}selected{% endif %} value='3'>3</option>
+                    <option {% if profile.year == 4 %}selected{% endif %} value='4'>4+</option>
+                </select>
+            </div>
+            <div class="form-group row col-md-10">
+            <label for="gender">Gender</label>
+                <select id="gender" class="custom-select">
+                    <option {% if profile.gender == 'm' %}selected{% endif %} value='m'>Male</option>
+                    <option {% if profile.gender == 'f' %}selected{% endif %} value='f'>Female</option>
+                    <option {% if profile.gender == 'o' %}selected{% endif %} value='o'>Other</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group col-md-3">
-            <label for="genderSelect">Gender</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="gender">
-                <option value="m">Male</option>
-                <option value="f">Female</option>
-                <option value="o">Other</option>
-            </select>
-        </div>
-    </div>
 
-    <br>
-    <button class="btn btn-lg btn-danger" type="submit">Create Profile</button>
+        <button type=submit class="btn btn-lg btn-danger">Save Profile</button>
+    </div>
 </form>
+
 {% endblock %}
