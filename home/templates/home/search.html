@@ -54,7 +54,11 @@
                         <a href="{% url 'detail' room.id %}"><h4 class="card-title m-1" >{{ room.property_name }}</h4></a>
                         <p class="m-1">{{ room.address}}</p>
                         <p class="m-1">${{ room.cost}}</p>
-                        <p class="m-1">{{ room.number_of_rooms}} Room(s)</p>
+                        <p class="m-1">{% if room.property_type == 'a' %}Apartment
+                            {% elif room.property_type == 'c' %}Condo
+                            {% elif room.property_type == 't' %}Townhouse
+                            {% else %} house {% endif %}</p>
+                        <p class="m-1">{{ room.number_of_rooms}} Room(s) | {{ room.garages }} Parking</p>
                   </div>
                 </div>
                 <p class="text-muted m-0 pt-2">Last Updated: {{room.last_updated.date}}</p>

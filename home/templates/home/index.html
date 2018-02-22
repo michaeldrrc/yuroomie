@@ -18,29 +18,34 @@
             </div>
         </form>
         <div class="w-100" style="height:100px;"></div>
-        <h1>Latest Listings<span><a class="nav-link" href="{% url 'browse' %}">see more</a></span></h1>
-        <div class="card-deck">
-            {% if latest_posts_list %}
-                {% for room in latest_posts_list %}
-                    <div class="card">
-                        <a href="{% url 'detail' room.id %}">
-                            <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
-                        <div class="card-body">
-                            <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
-                            <p class="card-text">{{ room.description|truncatewords:23 }}</p>
+        <div class="row">
+            <h1>Latest Listings</h1>
+            <a class="nav-link" href="{% url 'search' %}"><h5>see more</h5></a>
+        </div>
+        <div class="row">
+            <div class="card-deck">
+                {% if latest_posts_list %}
+                    {% for room in latest_posts_list %}
+                        <div class="card">
+                            <a href="{% url 'detail' room.id %}">
+                                <img class="card-img-top" src="{{ room.roomimage_set.all.0.image.url }}" alt="{{room.name}}"></a>
+                            <div class="card-body">
+                                <a href="{% url 'detail' room.id %}"><h5 class="card-title">{{ room.property_name }}</h5></a>
+                                <p class="card-text">{{ room.description|truncatewords:23 }}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">{{ room.address }}</li>
+                                <li class="list-group-item">${{ room.cost }}</li>
+                            </ul>
+                            <div class="card-footer">
+                                <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
+                            </div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">{{ room.address }}</li>
-                            <li class="list-group-item">${{ room.cost }}</li>
-                        </ul>
-                        <div class="card-footer">
-                            <small class="text-muted">Last updated: {{ room.last_updated.date }}</small>
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <h1>No rooms are available.</h1>
-            {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <h1>No rooms are available.</h1>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

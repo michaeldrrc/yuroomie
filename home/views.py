@@ -86,8 +86,9 @@ def create(request):
         if form.is_valid():
             print('valid')
             # if the user added more than 4 (to be changed to 6) or no images, return the form again
-            if len(request.FILES.getlist('images')) > 4 or len(request.FILES.getlist('images')) == 0:
-                return render(request, 'home/create.html', {'form': form})
+            if len(request.FILES.getlist('images')) > 6 or len(request.FILES.getlist('images')) == 0:
+                error_message = "Please enter anywhere between 1 and 6 images"
+                return render(request, 'home/create.html', {'form': form, 'error_message': error_message})
             
             new_room = form.save(commit=False)
             new_room.host_name = (request.user.first_name + ' ' + request.user.last_name[:1])
