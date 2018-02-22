@@ -14,12 +14,24 @@ def signup(request):
                                 password=uf.cleaned_data['password1'],)
             if user is not None:
                 login(request, user)
-                userprofile = Profile(user=user)
+                userprofile = Profile(user=user, year=1)
                 userprofile.save()
-                return render(request, 'signup_success.html')
+                return redirect('edit_profile')
     else:
         uf = UserRegistrationForm(prefix='user')
     return render(request, 'signup.html', {'userform': uf})
+
+def edit_profile(request):
+    if request.method == 'POST':
+         user = request.user
+         profile = Profile.objects.get(user=user)
+         profile.major = request.POST['major']
+         profile.year = request.POST['year']
+         profile.gender = request.POST['gender']
+         profile.save()
+         return render(request, 'signup_success.html')
+    return render(request, 'edit_profile.html')
+
 
 def signin(request):
     if request.method == 'POST':

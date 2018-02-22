@@ -44,7 +44,6 @@ def search(request):
             Q(address__icontains=query_q) |
             Q(description__icontains=query_q)
         )
-            
     else: print("No query request")
 
     if 'filter' in query_dict:
