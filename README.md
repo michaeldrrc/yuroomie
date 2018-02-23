@@ -100,3 +100,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Thanks to York University for hosting an excellent Hackfest2018
+
+## Screenshots
+
+![Listing Details](https://i.imgur.com/eznbn70.jpg)
+![Search Results](https://i.imgur.com/hhhCuI9.png)
